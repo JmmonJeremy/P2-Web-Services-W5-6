@@ -1,0 +1,914 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "creationGoal-api",
+    "description": "CreationGoal Process App Personal Project",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "GETS the HOME page ---------- (!!!OAUTH DOORWAY ROUTE!!!)",
+        "description": "For the HOME page if you are NOT LOGGED IN it loads the LOGIN page OR if you are LOGGED IN it loads the DASHBOARD.<br>\r  <b>The outcome will only reflect if you are signed in through Google or GitHub OAuth. Changing the boolean below has no direct effect.</b>",
+        "parameters": [
+          {
+            "name": "accessDenied",
+            "in": "query",
+            "description": "(false) denotes that AUTHORIZATION was GIVEN, thus redirecting you to the dashboard page   \n(true) denotes that AUTHORIZATION was DENIED, thus rendering the login page.",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, the LOGIN page is loaded or you are already logged in & the DASHBOARD page is loaded"
+          },
+          "401": {
+            "description": "A previous LOGIN was NOT AUTHORIZED & you were redirected here to try again."
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to get AUTHORIZATION for you."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api-docs": {
+      "get": {
+        "summary": "GETS the SWAGGER API DOCUMENTATION page ____________*** This api-docs page is in sync with the ---(OAUTH AUTHORIZATION)--- from the LOGIN entry page***",
+        "description": "All routes are displayed for the creationGoals app.",
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned the SWAGGER API DOCUMENTATION page"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET the SWAGGER API DOCUMENTATION page"
+          }
+        }
+      }
+    },
+    "/profiles/": {
+      "get": {
+        "summary": "GETS all Profiles",
+        "description": "All Profiles are displayed on the profiles page.",
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET Retrieved all the Profiles"
+          },
+          "404": {
+            "description": "The attempted GET of all Profiles was Not Found"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET all Profiles"
+          }
+        }
+      },
+      "post": {
+        "summary": "POSTS user input to create a new Profile",
+        "description": "The entered Profile data is added to the database.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "example": "any"
+                },
+                "motto": {
+                  "example": "any"
+                },
+                "firstName": {
+                  "example": "any"
+                },
+                "middleName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "idol": {
+                  "example": "any"
+                },
+                "photo": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "SUCCESS, POST   a new Profile"
+          },
+          "400": {
+            "description": "BAD REQUEST your POST was attempted with forbidden entries"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the Profile data"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to POST the selected Profile"
+          }
+        }
+      }
+    },
+    "/profiles/{username}": {
+      "get": {
+        "summary": "GETS a Profile by username",
+        "description": "The selected Profile is displayed on the profiles page.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET Retrieved the selected Profile"
+          },
+          "404": {
+            "description": "The attempted GET of the selected Profile was Not Found"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the USERNAME PARAMETER"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET the selected Profile"
+          }
+        }
+      },
+      "put": {
+        "summary": "UPDATES a Profile that has been selected by username with any new data entered",
+        "description": "The changed data for the Profile updates the database",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Fields to update",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "Updated username"
+                },
+                "motto": {
+                  "type": "string",
+                  "example": "Updated motto"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "Updated firstName"
+                },
+                "middleName": {
+                  "type": "string",
+                  "example": "Updated middleName"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Updated lastName"
+                },
+                "idol": {
+                  "type": "string",
+                  "example": "Updated idol"
+                },
+                "photo": {
+                  "type": "string",
+                  "example": "Updated photo"
+                }
+              },
+              "required": "idol"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "SUCCESS (with no content returned), PUT   the selected Profile in the database"
+          },
+          "400": {
+            "description": "BAD REQUEST your PUT was attempted with forbidden entries"
+          },
+          "404": {
+            "description": "The attempted PUT of the specified Profile for updating was Not Found"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the Profile data"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to PUT the form page for updating the selected creationGoal"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETES a Profile by its username",
+        "description": "With deletion it",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, the Profile was DELETED"
+          },
+          "404": {
+            "description": "The selected Profile for DELETION was NOT FOUND"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the USERNAME PARAMETER"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to DELETE the Profile"
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "summary": "GETS all the users",
+        "description": "All users are displayed.",
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET retrieved all users"
+          },
+          "404": {
+            "description": "The attempted GET of all users was Not Found"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET all users"
+          }
+        }
+      },
+      "post": {
+        "summary": "POSTS input to create a new user",
+        "description": "The entered user information is added to the database.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "googleId": {
+                  "example": "any"
+                },
+                "githubId": {
+                  "example": "any"
+                },
+                "displayName": {
+                  "example": "any"
+                },
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "image": {
+                  "example": "any"
+                },
+                "bio": {
+                  "example": "any"
+                },
+                "location": {
+                  "example": "any"
+                },
+                "company": {
+                  "example": "any"
+                },
+                "website": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "SUCCESS, POST   a new user"
+          },
+          "400": {
+            "description": "BAD REQUEST your POST was attempted with forbidden entries"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the user data"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to POST the selected user"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "GETS a user by their _id",
+        "description": "The selected user is displayed.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET Retrieved the selected user"
+          },
+          "404": {
+            "description": "The attempted GET of the selected user was Not Found"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the _id PARAMETER"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET the selected user"
+          }
+        }
+      },
+      "put": {
+        "summary": "UPDATES a user that has been selected by _id with any new data entered",
+        "description": "The changed data for the user updates the database",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier for the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Fields to update",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "Updated email"
+                },
+                "displayName": {
+                  "type": "string",
+                  "example": "Updated displayName"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "Updated firstName"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Updated lastName"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "Updated image"
+                },
+                "bio": {
+                  "type": "string",
+                  "example": "Updated bio"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "Updated location"
+                },
+                "company": {
+                  "type": "string",
+                  "example": "Updated company"
+                },
+                "website": {
+                  "type": "string",
+                  "example": "Updated website"
+                }
+              },
+              "required": "email"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "SUCCESS (with no content returned), PUT   the selected user in the database"
+          },
+          "400": {
+            "description": "BAD REQUEST your PUT was attempted with forbidden entries"
+          },
+          "404": {
+            "description": "The attempted PUT of the specified user for updating was Not Found"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the user data"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to PUT the data change"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETES a user by its _id",
+        "description": "With deletion it",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, the user was DELETED"
+          },
+          "404": {
+            "description": "The selected user for DELETION was NOT FOUND"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the _id PARAMETER"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to DELETE the user"
+          }
+        }
+      }
+    },
+    "/auth/error/401": {
+      "get": {
+        "summary": "GETS the 401 page for denial of ---(OAUTH AUTHORIZATION)---",
+        "description": "Special page created for UNAUTHORIZED error events to redirect users to.",
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "summary": "DELETES ---(OAUTH AUTHORIZATION)--- for the user",
+        "description": "After DELETING AUTHORIZATION of the user it returns a success code and redirects the user to the LOGIN PAGE.",
+        "responses": {
+          "200": {
+            "description": "SUCCESS, the OAUTH AUTORIZATION was DELETED"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dashboard/": {
+      "get": {
+        "summary": "GETS all creationGoals associated with the _id of a user - essentially the LOGGED IN HOME ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "All creationGoals associated with that user are displayed on the dashboard page.",
+        "parameters": [
+          {
+            "name": "created",
+            "in": "query",
+            "description": "(true) indicates a new creationGoal was successfully created, this trigger a post to the dashboard page that the user is redirected to.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "updated",
+            "in": "query",
+            "description": "(true) indicates a new creationGoal was successfully updated, this trigger a post to the dashboard page that the user is redirected to.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "deleted",
+            "in": "query",
+            "description": "(true) indicates a new creationGoal was successfully deleted, this trigger a post to the dashboard page that the user is redirected to.",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned all creationGoals associated with the user, after a successful loading of page.   \nRedirection SUCCESS loading options: #1 after a CREATOINGOAL was UPDATED, #2 after a CREATOINGOAL was DELETED"
+          },
+          "201": {
+            "description": "SUCCESS, GET returned all creationGoals associated with the user, after ADDING another CREATIONGOAL"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to GET the creationGoals"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET all creationGoals associated with the user"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/creationGoals/user/{userId}": {
+      "get": {
+        "summary": "GETS all Public creationGoals associated with a selected user _id ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "All Public creationGoals associated with a selected user are displayed on the dashboard page..",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The MongoDB ObjectId under the _id label."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned all creationGoals associated with the user"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to GET the creationGoals"
+          },
+          "404": {
+            "description": "The selected user associated with creationGoals was NOT FOUND"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the USER _id PARAMETER"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET all creationGoals associated with the user"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/creationGoals/edit/{id}": {
+      "get": {
+        "summary": "GETS the creationGoal belonging to a user by _id for the user to edit & update ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "The creationGoal to be edited is displayed on the creationGoals edit page.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned the selected creationGoal belonging to the user"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to GET this creationGoal for editing"
+          },
+          "404": {
+            "description": "The selected creationGoal was NOT FOUND"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the CREATIONGOAL _id PARAMETER"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET the selected creationGoal"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/creationGoals/add": {
+      "get": {
+        "summary": "GETS the form page to be able to create a new creationGoal ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "The form to fill out for a new creationGoal is loaded onto a page.",
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned the from page to add a new creationGoal"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to GET the form page that adds a new creationGoal"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET the form page for adding a creationGoal"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/creationGoals/": {
+      "get": {
+        "summary": "GETS all the creationGoals with a status of Public ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "All public creationGoals are displayed on the creationGoals index page.",
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned all Public creationGoals"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to GET the Public creationGoals"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to GET all Public creationGoals"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "POSTS the data entered into the form page to create a new creationGoal ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "The filled out form for a new creationGoal is added to the database & the user is notified & redirected to the dashboard page.<br><b>OPTIONAL FIELDS Category Titles to Copy & Pate to JSON Body -> \"creationNumber\":, \"creationDate\":, & \"status\":</b>",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Fields to fill out.    \n(Additional OPTIONAL FIELDS you can add to the BODY BELOW = 'creationNumber':, 'creationDate':, & 'status':)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "goal": {
+                  "type": "string",
+                  "example": "New added goal"
+                },
+                "motivator": {
+                  "type": "string",
+                  "example": "New added motivator"
+                },
+                "desire": {
+                  "type": "string",
+                  "example": "New added desire"
+                },
+                "belief": {
+                  "type": "string",
+                  "example": "New added belief"
+                },
+                "knowledge": {
+                  "type": "string",
+                  "example": "New added knowledge"
+                },
+                "plan": {
+                  "type": "string",
+                  "example": "New added plan"
+                },
+                "action": {
+                  "type": "string",
+                  "example": "New added action"
+                },
+                "victory": {
+                  "type": "string",
+                  "example": "New added victory"
+                }
+              },
+              "required": "goal"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "SUCCESS, POST added a new creationGoal to the database"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to POST the form page that adds a new creationGoal"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the creationGoal data"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to POST the form page for adding a creationGoal"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/creationGoals/{id}": {
+      "put": {
+        "summary": "UPDATES a creationGoal that has been selected by id with the data entered into the form ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "The updated data in the form for the creationGoal changes the database & the user is notified & redirected to the dashboard page.<br><b>OPTIONAL FIELDS Category Titles to Copy & Pate to JSON Body -> \"creationNumber\":, \"creationDate\":, & \"status\":</b>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Equal to the Unique identifier _id field for the creationGoal (ie: 6736b9dc941b8c39d5d9ef23)"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Fields to update    \n(Additional OPTIONAL FIELDS you can add to the BODY BELOW = 'creationNumber':, 'creationDate':, & 'status':)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "goal": {
+                  "type": "string",
+                  "example": "Updated goal"
+                },
+                "motivator": {
+                  "type": "string",
+                  "example": "Updated motivator"
+                },
+                "desire": {
+                  "type": "string",
+                  "example": "Updated desire"
+                },
+                "belief": {
+                  "type": "string",
+                  "example": "Updated belief"
+                },
+                "knowledge": {
+                  "type": "string",
+                  "example": "Updated knowledge"
+                },
+                "plan": {
+                  "type": "string",
+                  "example": "Updated plan"
+                },
+                "action": {
+                  "type": "string",
+                  "example": "Updated action"
+                },
+                "victory": {
+                  "type": "string",
+                  "example": "Updated victory"
+                }
+              },
+              "required": "goal"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, PUT updated the selected creationGoal in the database"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to PUT the form page that updates the selected creationGoal"
+          },
+          "404": {
+            "description": "The attempted PUT of the specified creationGoal for updating was Not Found"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the creationGoal data"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to PUT the form page for updating the selected creationGoal"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "DELETES a creationGoal by its _id ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "After deletion it returns a success code and redirects to the dashboard page with an alert notification of the successful deletion of the creationGoal.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, the creationGoal was DELETED"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to DELETE this creationGoal"
+          },
+          "404": {
+            "description": "The selected creationGoal for DELETION was NOT FOUND"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the CREATIONGOAL _id PARAMETER"
+          },
+          "500": {
+            "description": "There was an INTERNAL SERVER ERROR while trying to DELETE all Public creationGoals"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "GETS a creationGoals by its _id ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "The selected creationGoal is displayed on the creationGoals show page.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier for the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned the selected creationGoal"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to GET this creationGoal"
+          },
+          "404": {
+            "description": "The attempted GET of specified creationGoal was Not Found"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the CREATIONGOAL _id PARAMETER"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/creationGoals/search/{query}": {
+      "get": {
+        "summary": "GETS all the Public creationGoals that meet search criteria within the goal definition ---------- (!!!OAUTH PROTECTED ROUTE!!!)",
+        "description": "All Public creationGoals within goal definition search criteria are displayed on the creationGoals index page.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Search term for creationGoals"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS, GET returned all Public creationGoals that met the search criteria"
+          },
+          "401": {
+            "description": "You are NOT AUTHORIZED to GET the Public creationGoals"
+          },
+          "404": {
+            "description": "The attempted GET of all Public creationGoals within the search were Not Found"
+          },
+          "412": {
+            "description": "The PRECONDITION FAILED in the validation of the QUERY PARAMETER"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  }
+}

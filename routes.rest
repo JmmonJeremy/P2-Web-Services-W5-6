@@ -1,0 +1,178 @@
+@local
+###
+# # # CREATIONGOALS DATABASE # # # DEVELOPMENT ROUTES  # # # START FOR LOCALHOST  # # # # # # # # # # # # # # # # # # # # # # # # # #
+// RETRIEVING SWAGGER DOCUMENTATION ###
+### getting the API docs from SWAGGER ###
+GET http://localhost:3000/api-docs
+// OAUTH 2.0 PROCESS ### ***************************************************************
+### getting homepage/login page ###
+GET http://localhost:3000/
+### start GitHub OAuth login
+GET http://localhost:3000/auth/github
+### getting the Access Token
+https://github.com/login/oauth/authorize?client_id=Ov23libFgCKI6dSQVH0n&redirect_uri=/http://localhost:3000/github/callback&scope=user:email
+
+> {% response %}
+### Exchange Authorization Code for Access Token
+POST https://github.com/login/oauth/access_token
+Content-Type: application/json
+Accept: application/json
+
+{
+  "client_id": "{{ GITHUB_CLIENT_ID }}",
+  "client_secret": "{{ GITHUB_CLIENT_SECRET }}",
+  "code": "c2826ab0978d2f42a171",
+  "redirect_uri": "http://localhost:3000/github/callback"
+}
+
+> {% response %}
+// HOMEPAGE GET REQUEST FOR ALL OF THE SIGNED IN USERS CREATIONGOALS ### *****************************
+### getting dashboard list of all a user's creationGoals
+GET http://localhost:3000/dashboard
+Cookie: 
+Authorization: 
+// OTHER CONDITIONAL TYPES OF GET REQUESTS FOR CREATIONGOALS ### *************************************
+### getting all CreationGoals Belonging to 1 User
+GET http://localhost:3000/creationGoals/user/672696cfd8c33d2cc0a70a23
+Cookie: 
+Authorization: 
+### getting all CreationGoals of that User that match the search within goals
+GET http://localhost:3000/creationGoals/search/WIN
+Cookie: 
+Authorization: 
+### getting page to create a CreationGoal
+GET http://localhost:3000/creationGoals/add
+Cookie: 
+Authorization: 
+### getting 1 CreationGoal Belonging to User to edit
+GET http://localhost:3000/creationGoals/edit/672fda3b0108c2517176864d
+Cookie: 
+Authorization: 
+// MAIN 2 TYPES OF GET REQUESTS FOR CREATIONGOALS ### **************************************************
+### getting list of all Public creationGoals for a user
+GET http://localhost:3000/creationGoals
+Cookie: 
+Authorization: 
+### getting 1 CreationGoal Belonging to User or other that is Public
+GET http://localhost:3000/creationGoals/672fda3b0108c2517176864d
+Cookie: 
+Authorization: 
+// 3 WAYS OF ALTERING DATA FOR CREATIONGOALS *************************************************************
+### creating a creationGoal 
+POST http://localhost:3000/creationGoals/672fda3b0108c2517176864d
+Content-Type: application/json
+Cookie: 
+Authorization: 
+
+{
+  "creationNumber": 10,
+  "creationDate": "9/10/24",
+  "goal": "Demonstrate how to post a new Creation Object",
+  "motivator": "I can FANTASTIC for others.",
+  "desire": "To Demonstrate things for others",
+  "belief": "Everyone needs Demonstrations",
+  "knowledge": "People learn by Demonstration",  
+  "plan": "Enter a Post Demonstration",
+  "action": "I saved a Post Demonstration",
+  "victory": "I created a Post Demonstration",
+  "status": "Public",
+  "user": "67332dd875339058d5f9dfc9"  
+}
+### updating a creationGoal
+PUT http://localhost:3000/creationGoals/672ff56da30463bf2bcc5e59
+Content-Type: application/json
+Cookie: 
+Authorization: 
+
+{
+  "creationDate": "9/6/24",
+  "creationNumber": 3,
+  "goal": "DEMO how to post a new Creation Object",
+  "motivator": "I can be a DEMOMAN for others",
+  "desire": "To DEMO things for others",
+  "belief": "Everyone needs DEMOS",
+  "knowledge": "People learn by DEMO",  
+  "plan": "Enter a Post DEMO",
+  "action": "I saved a Post DEMO",
+  "victory": "I created a Post DEMO",
+  "status": "Private",
+  "user": "67332dd875339058d5f9dfc9" 
+}
+### deleting a creationGoal
+DELETE http://localhost:3000/creationGoals/6736a23718aaeac06e5792df
+Cookie: 
+Authorization: 
+# # # PROFILES DATABASE # # # DEVELOPMENT ROUTES  # # # START FOR LOCALHOST  # # # # # # # # # # # # # # # # # # # # # # # # # #
+// MAIN 2 TYPES OF GET REQUESTS FOR PROFILES ************************************************************
+### getting list of all profiles (ordered by username alphabetically)
+GET http://localhost:3000/profiles
+Content-Type: application/json
+### getting 1 profile by username
+GET http://localhost:3000profiles/Jmmon
+Content-Type: application/json
+// 3 WAYS OF ALTERING DATA FOR PROFILES ******************************************************************
+### creating a profile with a post
+POST http://localhost:3000/profiles
+Content-Type: application/json
+
+{  
+  "username": "DemoMan",
+  "motto": "Do unto others as Christ would.",
+  "firstName": "Demo",
+  "middleName": "Bro",
+  "lastName": "Showman",
+  "idol": "Thomas S Monson",
+  "photo": "https://ibb.co/jTH610t"
+}
+### updating a profile with a post
+PUT http://localhost:3000/profiles/DemoMan
+{
+  "username": "DemoWoman",
+  "motto": "Come what may, and love it.",
+  "firstName": "Demo",
+  "middleName": "Sister",
+  "lastName": "Showoman",
+  "idol": "Mother Teresa"
+}
+### removing a profile with delete
+DELETE http://localhost:3000/profiles/DemoWoman
+# # # USERS DATABASE # # # DEVELOPMENT ROUTES  # # # START FOR LOCALHOST  # # # # # # # # # # # # # # # # # # # # # # # # # #
+// MAIN 2 TYPES OF GET REQUESTS FOR USERS ************************************************************
+###
+### getting list of all profiles (ordered by username alphabetically)
+GET http://localhost:3000/user
+Content-Type: application/json
+### getting 1 profile by username
+GET http://localhost:3000/user/673c4e9fd5aa0feb6b515bd3
+Content-Type: application/json
+// 3 WAYS OF ALTERING DATA FOR USERS ******************************************************************
+### creating a profile with a post
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{  
+  "_id": "67386b8ff5fe14716ce2dd9a",
+  "email": "demo@gmail.com",
+  "displayName": "Demo Man",
+  "firstName": "Demo",
+  "lastName": "Showman", 
+  "image": "https://ibb.co/jTH610t",
+  "bio": "I am a self made Demo man."
+}
+### updating a profile with a post
+PUT http://localhost:3000/user/67386b8ff5fe14716ce2dd9a
+Content-Type: application/json
+
+{
+  "email": "demoWoman@gmail.com",
+  "displayName": "Demo Woman",
+  "firstName": "Demo",  
+  "lastName": "Showoman",  
+  "image": "https://ibb.co/jTH610t",
+  "bio": "I am a self made Demo woman."
+}
+### removing a profile with delete
+DELETE http://localhost:3000/user/67386b8ff5fe14716ce2dd9a
+# # # CREATIONGOALS DATABASE # # # PRODUCTION ROUTES  # # # START FOR RENDER  # # # # # # # # # # # # # # # # # # # # # # # # # #
+// RETRIEVING WITH GET FOR CREATIONGOALS
+###

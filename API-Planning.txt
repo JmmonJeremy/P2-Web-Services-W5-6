@@ -1,0 +1,58 @@
+Theme
+    _id                 | MongoDB_ID
+    themeName           | String
+    headerFontSize      | Number
+    headerFontFamily    | String
+    bodyFontSize        | Number
+    bodyFontFamily      | String
+    colors              | String []
+    photos              | Base64Image []
+
+Profile 
+    _id                 | MongoDB_ID
+    username            | String UNIQUE
+    motto               | String 
+    firstName           | String
+    middleName          | String
+    lastName            | String
+    hero                | String
+    photo               | Base64Image
+
+Motivators
+    _id                 | MongoDB_ID
+    trait               | String []
+    personal            | String []
+    scripture           | String []
+    spiritual           | String []
+    affirmation         | String []
+    desire              | String []
+    belief              | String []
+    knowledge           | String []
+    victory             | String []
+    photo               | Base64Image 
+
+
+Goals
+    _id                 | MongoDB_ID
+    purpose             | String
+    lifetime            | String []
+    tenYear             | String []
+    fiveYear            | String []
+    twoAndOneHalfYear   | String []
+    year                | String []
+    month               | String []
+    week                | String []
+    day                 | String []
+
+Creation
+    _id                 | MongoDB_ID
+    creationNumber      | Number UNIQUE AUTOINCREMENT
+    motivator           | String
+    desire              | String
+    belief              | String
+    knowledge           | String
+    goal                | String
+    plan                | String    
+    action              | String
+    victory             | String
+
