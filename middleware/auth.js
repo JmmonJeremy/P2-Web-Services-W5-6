@@ -13,6 +13,9 @@ module.exports = {
     console.log("Authorization: Bearer " + req.accessToken);
     // console.log("res.locals:", res.locals); 
     console.log(`Authenticated user: ${req.user.id} |-> ${req.user.displayName}`); 
+    // For user email and password sign-in
+    console.log("LOGGED-IN-USER: " + req.user);
+    console.log("isAuthenticated: " + req.isAuthenticated());
     if (req.isAuthenticated()) {     
       return next();
     } else {

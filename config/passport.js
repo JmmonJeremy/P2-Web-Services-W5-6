@@ -5,9 +5,6 @@ const GoogleTokenStrategy = require('passport-google-token').Strategy; // Import
 const mongoose = require('mongoose');
 const db = require('../models');
 const User = db.User;
-// const User = require('../models/User');
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 module.exports = function (passport) {
   passport.use(
@@ -59,17 +56,20 @@ module.exports = function (passport) {
     )
   );
   
-  passport.use(
+  passport.use(    
     new GitHubStrategy(
       {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: '/auth/github/callback',
+        passReqToCallback: true, // Allow req to be passed to the verify callback
         failureRedirect: '/dashboard?accessDenied=true', // Redirect with error flag
       },
-      async (accessToken, refreshToken, profile, done) => {
-
+      async (req, accessToken, refreshToken, profile, done) => {
         console.log("GITHUB Access Token:", accessToken);
+
+        console.log("PASSPORT-Session: ", req.session);
+
         const email = profile.emails && profile.emails[0].value;
 
         // Split displayName into firstName and lastName based on the first space

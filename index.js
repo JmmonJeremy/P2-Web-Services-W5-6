@@ -17,6 +17,9 @@ const connectDB = require('./config/db'); // google auth database add-on
 
 const app = express();
 
+// Set trust proxy
+app.set('trust proxy', 1); // Trust the first proxy (required for Render's setup)
+
 const options = {
   swaggerOptions: {
     operationsSorter: (a, b) => {
@@ -98,10 +101,17 @@ connectDB(); // google auth database add-on database connection
 // Sessions middleware
 // console.log('Initializing session middleware...');
 app.use(session({
-  secret: 'victory-planner',
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
+  // This is where the session is stored in the database as sessions 
+  // from https://www.npmjs.com/package/connect-mongo
   store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // Ensure cookies are only sent over HTTPS in production
+    httpOnly: true,  // Prevents access to the cookie via JavaScript (XSS protection)    
+    maxAge: 24 * 60 * 60 * 1000 // 1 day (adjust if needed)
+  } 
 }));
 
 // google auth   (Order #2)(OLD ORDER #9)
@@ -114,7 +124,7 @@ app.use(passport.session());
 app.use((req, res, next) => {
   if (req.user) {
     req.accessToken = req.user.accessToken;
-    req.user = req.user.user; // redefine req.user to only contain the user object
+    req.user = req.user.user; // redefine req.user to only contain the user object  
   }
   next();
 });

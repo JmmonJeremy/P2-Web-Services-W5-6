@@ -23,7 +23,7 @@ exports.checkGithubCode = (req, res, next) => {
   // req.query.code = 'invalidated_code';
   // console.log("req.query changed to: " + JSON.stringify(req.query, null, 2));
   const authorizationCode = req.query.code;
-  
+  console.log("Auth-Session: ", req.session);
   if (authorizationCode) {
     console.log("A Cookie: connect.sid=" + req.cookies['connect.sid']);
     console.log("Authorization Code:", authorizationCode);
@@ -42,9 +42,9 @@ exports.logOut = (req, res, next) => {
   // #swagger.responses[200] = { description: 'SUCCESS, the OAUTH AUTORIZATION was DELETED' } 
   req.logout((error) => { //clears the session on your app’s side
     if (error) { return next(error); }
-    req.session.destroy((err) => { //completely remove the session data
-      if (err) { return next(err); }
-      res.status(200).redirect('/');
+  req.session.destroy((err) => { //completely remove the session data
+    if (err) { return next(err); }
+    res.status(200).redirect('/');
     });
   });
 };

@@ -1,5 +1,6 @@
 const db = require('../models');
 const users = db.User;
+const bcryptUtils = require('../middleware/password.js');
 
 exports.findAll = (req, res) => {
     /* #swagger.summary = "GETS all the users" */   
@@ -58,7 +59,7 @@ exports.findOne = async (req, res) => {
 };
 
 // create a new user
-exports.create = (req, res) => { 
+exports.create = async (req, res) => { 
     /* #swagger.summary = "POSTS input to create a new user" */ 
     /* #swagger.description = 'The entered user information is added to the database.' */ 
     // #swagger.responses[201] = { description: 'SUCCESS, POST created a new user' }
@@ -71,39 +72,41 @@ exports.create = (req, res) => {
     res.status(400).send({ message: 'Content can not be empty!' });
     return;
   }
+  try {
+    // Hash the password
+    const hashedPassword = await bcryptUtils.hashPassword(req.body.password);
+    console.log('Hashed Password:', hashedPassword);
 
-  // Create a user
-  const user = new users({
-    // id_: req.body._id,
-    email: req.body.email,
-    googleId: req.body.googleId,
-    githubId: req.body.githubId,
-    displayName: req.body.displayName,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    image: req.body.image,
-    bio: req.body.bio,   
-    location: req.body.location,
-    company: req.body.company,
-    website: req.body.website,
-    // createdAt: req.body.createdAt  
-  });
-  // Save user in the database
-  user
-    .save(user)
-    .then((data) => {
-      if(data) {
-        res.status(201).json(data);
-      } else {
-        res.status(400).json(data.error || 'The server did not process the request. Some error occurred while creating the user Object.');
-      }      
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || 'Some error occurred while creating the user Object.',
-      });
+    // Create a user
+    const user = new users({
+      googleId: req.body.googleId,
+      githubId: req.body.githubId,
+      email: req.body.email,
+      password: hashedPassword, // Use the hashed password here
+      displayName: req.body.displayName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      image: req.body.image,
+      bio: req.body.bio,
+      location: req.body.location,
+      company: req.body.company,
+      website: req.body.website,
     });
+
+    // Save user in the database
+    const data = await user.save();
+    if (data) {
+      res.status(201).redirect('/dashboard?registered=true')
+    } else {
+      res.status(400).json({
+        error: 'The server did not process the request. Some error occurred while creating the user object.',
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || 'Some error occurred while creating the user object.',
+    });
+  }
 };
 
 // Update a user by the id in the request (For some reason auto-gen misses the added responses in update function only)
