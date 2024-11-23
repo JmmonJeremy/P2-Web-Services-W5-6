@@ -72,39 +72,56 @@ exports.create = async (req, res) => {
     res.status(400).send({ message: 'Content can not be empty!' });
     return;
   }
+
   try {
-    // Hash the password
-    const hashedPassword = await bcryptUtils.hashPassword(req.body.password);
-    console.log('Hashed Password:', hashedPassword);
+  let hashedPassword = null;
 
-    // Create a user
-    const user = new users({
-      googleId: req.body.googleId,
-      githubId: req.body.githubId,
-      email: req.body.email,
-      password: hashedPassword, // Use the hashed password here
-      displayName: req.body.displayName,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      image: req.body.image,
-      bio: req.body.bio,
-      location: req.body.location,
-      company: req.body.company,
-      website: req.body.website,
-    });
-
-    // Save user in the database
-    const data = await user.save();
-    if (data) {
-      res.status(201).redirect('/dashboard?registered=true')
-    } else {
-      res.status(400).json({
-        error: 'The server did not process the request. Some error occurred while creating the user object.',
-      });
+    // Hash the password if provided
+    if (req.body.password) {
+      hashedPassword = await bcryptUtils.hashPassword(req.body.password);
+      console.log('Hashed Password:', hashedPassword);
     }
+
+    // Create user object with incoming data
+    const incomingUser = {
+      googleId: req.body.googleId || null,
+      githubId: req.body.githubId || null,
+      email: req.body.email,
+      password: hashedPassword, // Use the hashed password if provided
+      displayName: req.body.displayName || 'CreationGoals User',
+      firstName: req.body.firstName || null,
+      lastName: req.body.lastName || null,
+      image: req.body.image || null,
+      bio: req.body.bio || null,
+      location: req.body.location || null,
+      company: req.body.company || null,
+      website: req.body.website || null,
+    };
+
+    // Check if the user already exists
+    let user = await users.findOne({ email: req.body.email }); 
+        
+    if (user) {      
+      Object.keys(incomingUser).forEach((key) => { 
+        if (incomingUser[key]) user[key] = incomingUser[key];  
+      });
+      // Save user in the database
+      await user.save();
+      console.log('User successfully updated:', user);
+      return res.status(200).redirect('/dashboard?updated=true');  // Send response after update    
+
+    } else {
+      // Create a new user
+      user = new users(incomingUser); 
+      await user.save();     
+      console.log('User successfully created:', user);
+      return res.status(201).redirect('/dashboard?registered=true');  // Send response after creation
+    }
+
   } catch (err) {
+    console.error('Error creating or updating user:', err.message);
     res.status(500).send({
-      message: err.message || 'Some error occurred while creating the user object.',
+      message: err.message || 'Some error occurred while creating or updating the user object.',
     });
   }
 };

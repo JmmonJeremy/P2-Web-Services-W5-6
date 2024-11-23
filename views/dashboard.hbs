@@ -2,21 +2,28 @@
 <h4><a href="/creationGoals" class="pg-link">CreationGoals</a></h4>
 <a href="/auth/logout"><h5 class="pg-link logout">Logout<i class="fas fa-door-open log-icon"></i></h5></a>
 {{#if created}}
-  {{#set flag="CreationGoal successfully added!"}}
+    <div class="created"> 
+        <h5 class="pg-header" style="float: left;">Dashboard</h5>
+        <h5 class="flag" style="float: right;">CreationGoal successfully added!</h5>
+    </div>
 {{else if updated}}
-  {{#set flag="CreationGoal successfully updated!"}}
+    <div class="created"> 
+        <h5 class="pg-header" style="float: left;">Dashboard</h5>
+        <h5 class="flag" style="float: right;">CreationGoal successfully updated!</h5>
+    </div>
 {{else if deleted}}
-  {{#set flag="CreationGoal successfully deleted!"}}
+    <div class="deleted"> 
+        <h5 class="pg-header" style="float: left;">Dashboard</h5>
+        <h5 class="flag" style="float: right;">CreationGoal successfully deleted!</h5>
+    </div>
 {{else if registered}}
-  {{#set flag="Registration successfully completed!"}}
-{{/if}}
-
-<div class="created">
-  <h5 class="pg-header" style="float: left;">Dashboard</h5>
-  {{#if flag}}
-    <h5 class="flag" style="float: right;">{{flag}}</h5>
-  {{/if}}
+<div class="created"> 
+    <h5 class="pg-header" style="float: left;">Dashboard</h5>
+    <h5 class="flag" style="float: right;">You have successfully registered!</h5>
 </div>
+{{else}}
+    <h5 class="pg-header" style="float: left;">Dashboard</h5>
+{{/if}}
 
 <h3 class="welcome" style="clear: both;">Welcome {{name}}</h3>
 <h6 class="mini-header">Here are your goal creatioins:</h6>

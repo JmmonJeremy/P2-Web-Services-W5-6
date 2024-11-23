@@ -60,9 +60,17 @@ module.exports = {
     const dateYear = validDate.getFullYear();
     return dateYear;
   },
-  goBack: function() {
-    // This will automatically fetch the Referer from the request headers
-    return this.req.get('Referer') || '/creationGoals'; // Fallback URL if Referer is not available
+  // goBack: function() {
+  //   // This will automatically fetch the Referer from the request headers
+  //   return this.req.get('Referer') || '/creationGoals'; // Fallback URL if Referer is not available
+  // },
+  goBack: function (req) {
+    // Ensure `req` is provided and has the `get` method
+    if (req && typeof req.get === 'function') {
+      return req.get('Referer') || '/creationGoals'; // Fallback to '/creationGoals' if Referer is not available
+    }
+    // Default fallback if `req` is undefined
+    return '/creationGoals';
   },
   log: function(id, title, user) {
     // Define a maximum length for the title column

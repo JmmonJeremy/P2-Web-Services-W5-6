@@ -1,4 +1,5 @@
 const validator = require('../helpers/validation-methods');
+const password = require('./password');
 
 // Sources: https://github.com/mikeerickson/validatorjs & https://blog.logrocket.com/handle-data-validation-node-js-validatorjs/
 const acceptUserInput = (req, res, next) => {
@@ -6,11 +7,12 @@ const acceptUserInput = (req, res, next) => {
     googleId: 'string',
     githubId: 'string',    
     email: 'required|string|email',
-    displayName: 'required|string',
-    firstName: 'required|string',
-    lastName: 'required|string',
-    image: 'required|string',
-    bio: 'required|string',
+    password: 'string',
+    displayName: 'string',
+    firstName: 'string',
+    lastName: 'string',
+    image: 'string',
+    bio: 'string',
     location: 'string',
     company: 'string',
     website: 'string'
