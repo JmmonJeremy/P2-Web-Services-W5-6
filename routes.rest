@@ -3,14 +3,14 @@
 # # # CREATIONGOALS DATABASE # # # DEVELOPMENT ROUTES  # # # START FOR LOCALHOST  # # # # # # # # # # # # # # # # # # # # # # # # # #
 // RETRIEVING SWAGGER DOCUMENTATION ###
 ### getting the API docs from SWAGGER ###
-GET http://localhost:3000/api-docs
+GET http://localhost:8080/api-docs
 // OAUTH 2.0 PROCESS ### ***************************************************************
 ### getting homepage/login page ###
-GET http://localhost:3000/
+GET http://localhost:8080/
 ### start GitHub OAuth login
-GET http://localhost:3000/auth/github
+GET http://localhost:8080/auth/github
 ### getting the Access Token
-https://github.com/login/oauth/authorize?client_id=Ov23libFgCKI6dSQVH0n&redirect_uri=/http://localhost:3000/github/callback&scope=user:email
+https://github.com/login/oauth/authorize?client_id=Ov23libFgCKI6dSQVH0n&redirect_uri=/http://localhost:8080/github/callback&scope=user:email
 
 > {% response %}
 ### Exchange Authorization Code for Access Token
@@ -22,44 +22,44 @@ Accept: application/json
   "client_id": "{{ GITHUB_CLIENT_ID }}",
   "client_secret": "{{ GITHUB_CLIENT_SECRET }}",
   "code": "c2826ab0978d2f42a171",
-  "redirect_uri": "http://localhost:3000/github/callback"
+  "redirect_uri": "http://localhost:8080/github/callback"
 }
 
 > {% response %}
 // HOMEPAGE GET REQUEST FOR ALL OF THE SIGNED IN USERS CREATIONGOALS ### *****************************
 ### getting dashboard list of all a user's creationGoals
-GET http://localhost:3000/dashboard
-Cookie: 
+GET http://localhost:8080/dashboard
+Cookie:
 Authorization: 
 // OTHER CONDITIONAL TYPES OF GET REQUESTS FOR CREATIONGOALS ### *************************************
 ### getting all CreationGoals Belonging to 1 User
-GET http://localhost:3000/creationGoals/user/672696cfd8c33d2cc0a70a23
+GET http://localhost:8080/creationGoals/user/672696cfd8c33d2cc0a70a23
 Cookie: 
 Authorization: 
 ### getting all CreationGoals of that User that match the search within goals
-GET http://localhost:3000/creationGoals/search/WIN
+GET http://localhost:8080/creationGoals/search/WIN
 Cookie: 
 Authorization: 
 ### getting page to create a CreationGoal
-GET http://localhost:3000/creationGoals/add
+GET http://localhost:8080/creationGoals/add
 Cookie: 
 Authorization: 
 ### getting 1 CreationGoal Belonging to User to edit
-GET http://localhost:3000/creationGoals/edit/672fda3b0108c2517176864d
+GET http://localhost:8080/creationGoals/edit/672fda3b0108c2517176864d
 Cookie: 
 Authorization: 
 // MAIN 2 TYPES OF GET REQUESTS FOR CREATIONGOALS ### **************************************************
 ### getting list of all Public creationGoals for a user
-GET http://localhost:3000/creationGoals
+GET http://localhost:8080/creationGoals
 Cookie: 
 Authorization: 
 ### getting 1 CreationGoal Belonging to User or other that is Public
-GET http://localhost:3000/creationGoals/672fda3b0108c2517176864d
+GET http://localhost:8080/creationGoals/672fda3b0108c2517176864d
 Cookie: 
 Authorization: 
 // 3 WAYS OF ALTERING DATA FOR CREATIONGOALS *************************************************************
 ### creating a creationGoal 
-POST http://localhost:3000/creationGoals/672fda3b0108c2517176864d
+POST http://localhost:8080/creationGoals/672fda3b0108c2517176864d
 Content-Type: application/json
 Cookie: 
 Authorization: 
@@ -79,7 +79,7 @@ Authorization:
   "user": "67332dd875339058d5f9dfc9"  
 }
 ### updating a creationGoal
-PUT http://localhost:3000/creationGoals/672ff56da30463bf2bcc5e59
+PUT http://localhost:8080/creationGoals/672ff56da30463bf2bcc5e59
 Content-Type: application/json
 Cookie: 
 Authorization: 
@@ -99,20 +99,20 @@ Authorization:
   "user": "67332dd875339058d5f9dfc9" 
 }
 ### deleting a creationGoal
-DELETE http://localhost:3000/creationGoals/6736a23718aaeac06e5792df
+DELETE http://localhost:8080/creationGoals/6736a23718aaeac06e5792df
 Cookie: 
 Authorization: 
 # # # PROFILES DATABASE # # # DEVELOPMENT ROUTES  # # # START FOR LOCALHOST  # # # # # # # # # # # # # # # # # # # # # # # # # #
 // MAIN 2 TYPES OF GET REQUESTS FOR PROFILES ************************************************************
 ### getting list of all profiles (ordered by username alphabetically)
-GET http://localhost:3000/profiles
+GET http://localhost:8080/profiles
 Content-Type: application/json
 ### getting 1 profile by username
 GET http://localhost:3000profiles/Jmmon
 Content-Type: application/json
 // 3 WAYS OF ALTERING DATA FOR PROFILES ******************************************************************
 ### creating a profile with a post
-POST http://localhost:3000/profiles
+POST http://localhost:8080/profiles
 Content-Type: application/json
 
 {  
@@ -125,7 +125,7 @@ Content-Type: application/json
   "photo": "https://ibb.co/jTH610t"
 }
 ### updating a profile with a post
-PUT http://localhost:3000/profiles/DemoMan
+PUT http://localhost:8080/profiles/DemoMan
 {
   "username": "DemoWoman",
   "motto": "Come what may, and love it.",
@@ -135,19 +135,19 @@ PUT http://localhost:3000/profiles/DemoMan
   "idol": "Mother Teresa"
 }
 ### removing a profile with delete
-DELETE http://localhost:3000/profiles/DemoWoman
+DELETE http://localhost:8080/profiles/DemoWoman
 # # # USERS DATABASE # # # DEVELOPMENT ROUTES  # # # START FOR LOCALHOST  # # # # # # # # # # # # # # # # # # # # # # # # # #
 // MAIN 2 TYPES OF GET REQUESTS FOR USERS ************************************************************
 ###
 ### getting list of all profiles (ordered by username alphabetically)
-GET http://localhost:3000/user
+GET http://localhost:8080/user
 Content-Type: application/json
 ### getting 1 profile by username
-GET http://localhost:3000/user/673c4e9fd5aa0feb6b515bd3
+GET http://localhost:8080/user/673c4e9fd5aa0feb6b515bd3
 Content-Type: application/json
 // 3 WAYS OF ALTERING DATA FOR USERS ******************************************************************
 ### creating a profile with a post
-POST http://localhost:3000/user
+POST http://localhost:8080/user
 Content-Type: application/json
 
 {  
@@ -160,7 +160,7 @@ Content-Type: application/json
   "bio": "I am a self made Demo man."
 }
 ### updating a profile with a post
-PUT http://localhost:3000/user/67386b8ff5fe14716ce2dd9a
+PUT http://localhost:8080/user/67386b8ff5fe14716ce2dd9a
 Content-Type: application/json
 
 {
@@ -172,7 +172,7 @@ Content-Type: application/json
   "bio": "I am a self made Demo woman."
 }
 ### removing a profile with delete
-DELETE http://localhost:3000/user/67386b8ff5fe14716ce2dd9a
+DELETE http://localhost:8080/user/67386b8ff5fe14716ce2dd9a
 # # # CREATIONGOALS DATABASE # # # PRODUCTION ROUTES  # # # START FOR RENDER  # # # # # # # # # # # # # # # # # # # # # # # # # #
 // RETRIEVING WITH GET FOR CREATIONGOALS
 ###
